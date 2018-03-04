@@ -57,8 +57,8 @@ public abstract class FenceReceiver extends BroadcastReceiver {
      * @param data        data to be attached to the pending intent
      * @return PendingIntent that will call this receiver
      */
-    static PendingIntent createPendingIntent(Context context, int requestCode, @Nullable Bundle data) {
-        return PendingIntent.getBroadcast(context, requestCode, createIntent(data), PendingIntent.FLAG_UPDATE_CURRENT);
+    static PendingIntent createPendingIntent(Context context, Class<? extends FenceReceiver> clz, int requestCode, @Nullable Bundle data) {
+        return PendingIntent.getBroadcast(context, requestCode, createIntent(context, clz, data), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -67,8 +67,9 @@ public abstract class FenceReceiver extends BroadcastReceiver {
      * @param data data to be attached to the intent
      * @return Intent that will call this receiver
      */
-    private static Intent createIntent(@Nullable Bundle data) {
+    private static Intent createIntent(Context context, Class<? extends FenceReceiver> clz, @Nullable Bundle data) {
         Intent intent = new Intent(ACTION_BACKGROUND_FENCE);
+        intent.setClass(context, clz);
 
         if (data != null) {
             intent.putExtra(EXTRA_BUNDLE, data);

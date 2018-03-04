@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         fenceStateMap -> {
                             if (!fenceStateMap.getFenceKeys().contains(ExampleFenceReceiver.HEADPHONES)) {
                                 AwarenessFence fence = HeadphoneFence.during(HeadphoneState.PLUGGED_IN);
-                                BackgroundFence.register(this, ExampleFenceReceiver.HEADPHONES, fence);
+                                BackgroundFence.register(this, ExampleFenceReceiver.class, ExampleFenceReceiver.HEADPHONES, fence);
                             }
                         },
                         throwable -> logError(throwable, "query")
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                         fenceStateMap -> {
                             if (!fenceStateMap.getFenceKeys().contains(ExampleFenceReceiver.TIME)) {
                                 AwarenessFence fence = TimeFence.inInterval(in5seconds, in10seconds);
-                                BackgroundFence.registerWithData(this, ExampleFenceReceiver.TIME, fence, bundle);
+                                BackgroundFence.registerWithData(this, ExampleFenceReceiver.class, ExampleFenceReceiver.TIME, fence, bundle);
                             }
                         },
                         throwable -> logError(throwable, "query")

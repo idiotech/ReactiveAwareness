@@ -45,6 +45,8 @@ android {
     }
 }
 
+apply plugin: 'com.github.dcendents.android-maven'
+
 dependencies {
     compile "com.mtramin.servant2:servant:$versions.servant"
 

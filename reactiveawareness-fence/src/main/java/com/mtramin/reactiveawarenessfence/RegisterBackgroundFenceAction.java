@@ -37,8 +37,10 @@ class RegisterBackgroundFenceAction {
     private final Bundle data;
     private String name;
     private AwarenessFence fence;
+    private Class<? extends FenceReceiver> clz;
 
     private RegisterBackgroundFenceAction(Context context,
+                                          Class<? extends FenceReceiver> clz,
                                           String name,
                                           AwarenessFence fence,
                                           @Nullable Bundle data) {
@@ -46,6 +48,7 @@ class RegisterBackgroundFenceAction {
         this.name = name;
         this.fence = fence;
         this.data = data;
+        this.clz = clz;
 
         Servant.actions(context, Awareness.API, this::onClientConnected, this::onClientError);
     }
@@ -57,8 +60,8 @@ class RegisterBackgroundFenceAction {
      * @param name    name of the fence
      * @param fence   fence to register
      */
-    static void register(Context context, String name, AwarenessFence fence) {
-        new RegisterBackgroundFenceAction(context.getApplicationContext(), name, fence, null);
+    static void register(Context context, Class<? extends FenceReceiver> clz, String name, AwarenessFence fence) {
+        new RegisterBackgroundFenceAction(context.getApplicationContext(), clz, name, fence, null);
     }
 
     /**
@@ -72,15 +75,16 @@ class RegisterBackgroundFenceAction {
      * @param data    data to attach to the fence
      */
     static void registerWithData(Context context,
+                                 Class<? extends FenceReceiver> clz,
                                  String name,
                                  AwarenessFence fence,
                                  @Nullable Bundle data) {
-        new RegisterBackgroundFenceAction(context.getApplicationContext(), name, fence, data);
+        new RegisterBackgroundFenceAction(context.getApplicationContext(), clz, name, fence, data);
     }
 
     private void onClientConnected(GoogleApiClient googleApiClient) {
         FenceUpdateRequest fenceRequest = new FenceUpdateRequest.Builder()
-                .addFence(name, fence, FenceReceiver.createPendingIntent(context, fence.hashCode(), data))
+                .addFence(name, fence, FenceReceiver.createPendingIntent(context, clz, fence.hashCode(), data))
                 .build();
 
         Awareness.FenceApi.updateFences(googleApiClient, fenceRequest)
