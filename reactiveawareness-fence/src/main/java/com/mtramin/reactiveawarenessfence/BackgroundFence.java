@@ -59,8 +59,8 @@ public class BackgroundFence {
      * @param name           name of the fence to register. Should be unique
      * @param awarenessFence The fence description
      */
-    public static void register(Context context, String name, AwarenessFence awarenessFence) {
-        RegisterBackgroundFenceAction.register(context, name, awarenessFence);
+    public static void register(Context context, Class<? extends FenceReceiver> clz, String name, AwarenessFence awarenessFence) {
+        RegisterBackgroundFenceAction.register(context, clz, name, awarenessFence);
     }
 
     /**
@@ -80,8 +80,8 @@ public class BackgroundFence {
      *                       Fence Callbacks. Instead of passing {@code null}, call
      *                       {@link #register(Context, String, AwarenessFence)} instead.
      */
-    public static void registerWithData(Context context, String name, AwarenessFence awarenessFence, @Nullable Bundle data) {
-        RegisterBackgroundFenceAction.registerWithData(context, name, awarenessFence, data);
+    public static void registerWithData(Context context, Class<? extends FenceReceiver> clz, String name, AwarenessFence awarenessFence, @Nullable Bundle data) {
+        RegisterBackgroundFenceAction.registerWithData(context, clz, name, awarenessFence, data);
     }
 
     /**
